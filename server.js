@@ -140,6 +140,8 @@ app.get("/admin/view-admin/:id", viewAdmin);
 app.delete("/admin/delete-admin/:id", deleteAdmin);
 
 //server
+const server = http.createServer(app);
+
 const PORT = process.env.PORT || 8000;
 
 server.listen(PORT, "0.0.0.0", () => {
