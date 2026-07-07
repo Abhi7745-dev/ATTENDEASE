@@ -21,8 +21,50 @@ function startScanner(){
         },
 
         {
-            fps:10,
-            qrbox:220
+            fps:15,
+
+            qrbox:function(viewfinderWidth, viewfinderHeight){
+
+                const minEdge =
+                Math.min(
+                    viewfinderWidth,
+                    viewfinderHeight
+                );
+
+                let size;
+
+                if(window.innerWidth <= 480){
+
+                    // Mobile
+                    size = minEdge * 0.85;
+
+                }
+
+                else if(window.innerWidth <= 768){
+
+                    // Tablet
+                    size = minEdge * 0.70;
+
+                }
+
+                else{
+
+                    // Laptop/Desktop
+                    size = minEdge * 0.45;
+
+                }
+
+                return{
+
+                    width:size,
+                    height:size
+
+                };
+
+            },
+
+            aspectRatio:1.0
+
         },
 
         onScanSuccess
