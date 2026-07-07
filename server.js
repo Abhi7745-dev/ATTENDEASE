@@ -20,7 +20,7 @@ app.use(express.static(__dirname));
 
 // database connection
  mongoose.connect(
-     "mongodb+srv://Attendease:abhi7745shek@attendease.1zx6wpo.mongodb.net/?appName=Attendease"
+     "mongodb+srv://Attendease:abhi7745shek@attendease.1zx6wpo.mongodb.net/attendease?retryWrites=true&w=majority"
  )
  .then(()=>{
 
