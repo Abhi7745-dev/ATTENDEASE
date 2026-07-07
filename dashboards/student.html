@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>AttendEase — Student Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root{
+
+      --bg:#0a0c0f;
+      --bg2:#111318;
+      --bg3:#181b22;
+
+      --border:rgba(255,255,255,0.07);
+      --border2:rgba(255,255,255,0.12);
+
+      --green:#00e599;
+      --green-dim:rgba(0,229,153,0.12);
+      --green-glow:rgba(0,229,153,0.25);
+
+      --text:#f0f2f5;
+      --muted:#6b7280;
+      --muted2:#9ca3af;
+
+    }
+
+    body{
+
+      font-family:'Sora', sans-serif;
+      background:var(--bg);
+      color:var(--text);
+
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+
+    }
+
+    body::before{
+
+      content:'';
+      position:fixed;
+      inset:0;
+
+      background-image:
+      linear-gradient(rgba(0,229,153,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,153,0.03) 1px, transparent 1px);
+
+      background-size:40px 40px;
+
+      z-index:0;
+      pointer-events:none;
+
+    }
+
+    /* NAVBAR */
+
+    nav{
+
+      position:sticky;
+      top:0;
+
+      z-index:100;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+
+      padding:0 32px;
+      height:65px;
+
+      background:rgba(10,12,15,0.85);
+
+      backdrop-filter:blur(20px);
+
+      border-bottom:1px solid var(--border);
+
+    }
+
+    .nav-logo{
+
+      display:flex;
+      align-items:center;
+      gap:10px;
+
+      text-decoration:none;
+
+    }
+
+    .logo-mark{
+
+      width:32px;
+      height:32px;
+
+      border-radius:10px;
+
+      background:var(--green);
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+    }
+
+    .logo-mark svg{
+
+      width:18px;
+      height:18px;
+
+      fill:#000;
+
+    }
+
+    .logo-name{
+
+      font-size:15px;
+      font-weight:600;
+      color:var(--text);
+
+    }
+
+    .nav-right{
+
+      display:flex;
+      align-items:center;
+      gap:14px;
+
+    }
+
+    .nav-time{
+
+      font-family:'JetBrains Mono', monospace;
+      font-size:12px;
+
+      color:var(--muted);
+
+    }
+
+    .logout-btn{
+
+      border:none;
+      outline:none;
+
+      background:var(--bg3);
+
+      border:1px solid var(--border2);
+
+      color:var(--muted2);
+
+      padding:8px 16px;
+
+      border-radius:10px;
+
+      cursor:pointer;
+
+      transition:0.2s;
+
+      font-size:12px;
+      font-family:'Sora', sans-serif;
+
+    }
+
+    .logout-btn:hover{
+
+      border-color:var(--green);
+      color:white;
+
+    }
+
+    /* MAIN */
+
+    main{
+
+      position:relative;
+      z-index:1;
+
+      width:100%;
+      max-width:700px;
+
+      margin:auto;
+
+      padding:50px 22px 70px;
+
+    }
+
+    /* GREETING */
+
+    .greeting{
+
+      margin-bottom:40px;
+
+    }
+
+    .greeting-label{
+
+      font-size:11px;
+      color:var(--green);
+
+      letter-spacing:2px;
+
+      margin-bottom:10px;
+
+      font-family:'JetBrains Mono', monospace;
+
+    }
+
+    .greeting-title{
+
+      font-size:30px;
+      font-weight:600;
+
+      line-height:1.3;
+
+    }
+
+    .greeting-title span{
+
+      color:var(--green);
+
+    }
+
+    /* ACTION CARD */
+
+    .action-card{
+
+      background:var(--green-dim);
+
+      border:1px solid rgba(0,229,153,0.2);
+
+      border-radius:24px;
+
+      padding:34px 24px;
+
+      text-align:center;
+
+      position:relative;
+
+      overflow:hidden;
+
+      margin-bottom:18px;
+
+    }
+
+    .action-card::before{
+
+      content:'';
+
+      position:absolute;
+
+      top:-70px;
+      left:50%;
+
+      transform:translateX(-50%);
+
+      width:220px;
+      height:220px;
+
+      border-radius:50%;
+
+      background:var(--green-glow);
+
+      filter:blur(70px);
+
+    }
+
+    .action-icon{
+
+      width:70px;
+      height:70px;
+
+      margin:auto auto 18px;
+
+      border-radius:18px;
+
+      background:var(--green);
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      position:relative;
+
+    }
+
+    .action-icon svg{
+
+      width:30px;
+      height:30px;
+
+      fill:#000;
+
+    }
+
+    .action-title{
+
+      font-size:22px;
+      font-weight:600;
+
+      margin-bottom:8px;
+
+    }
+
+    .action-sub{
+
+      font-size:14px;
+      color:var(--muted2);
+
+      line-height:1.7;
+
+      margin-bottom:25px;
+
+    }
+
+    .scan-btn{
+
+      width:100%;
+
+      border:none;
+      outline:none;
+
+      padding:15px;
+
+      border-radius:14px;
+
+      background:var(--green);
+
+      color:#000;
+
+      font-size:15px;
+      font-weight:600;
+
+      cursor:pointer;
+
+      transition:0.2s;
+
+    }
+
+    .scan-btn:hover{
+
+      transform:translateY(-2px);
+
+      box-shadow:0 8px 24px var(--green-glow);
+
+    }
+
+    /* INFO CARD */
+
+    .info-card{
+
+      background:var(--bg2);
+
+      border:1px solid var(--border);
+
+      border-radius:18px;
+
+      padding:22px;
+
+      margin-bottom:18px;
+
+    }
+
+    .card-label{
+
+      font-size:10px;
+
+      letter-spacing:2px;
+
+      color:var(--muted);
+
+      margin-bottom:18px;
+
+      font-family:'JetBrains Mono', monospace;
+
+    }
+
+    .info-flex{
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+
+      gap:15px;
+
+      flex-wrap:wrap;
+
+    }
+
+    .info-title{
+
+      font-size:18px;
+      font-weight:600;
+
+      margin-bottom:5px;
+
+    }
+
+    .info-sub{
+
+      font-size:13px;
+      color:var(--muted2);
+
+      line-height:1.6;
+
+    }
+
+    .active-badge{
+
+      background:var(--green-dim);
+
+      color:var(--green);
+
+      border:1px solid rgba(0,229,153,0.2);
+
+      padding:8px 14px;
+
+      border-radius:999px;
+
+      font-size:11px;
+
+      font-family:'JetBrains Mono', monospace;
+
+    }
+
+    /* NOTICE */
+
+    .notice-card{
+
+      background:var(--bg2);
+
+      border:1px solid var(--border);
+
+      border-radius:18px;
+
+      padding:20px;
+
+      display:flex;
+      gap:14px;
+
+    }
+
+    .notice-icon{
+
+      width:40px;
+      height:40px;
+
+      border-radius:12px;
+
+      background:rgba(255,193,7,0.1);
+
+      border:1px solid rgba(255,193,7,0.2);
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      flex-shrink:0;
+
+    }
+
+    .notice-icon svg{
+
+      width:18px;
+      height:18px;
+
+      fill:#ffc107;
+
+    }
+
+    .notice-text{
+
+      font-size:13px;
+
+      color:var(--muted2);
+
+      line-height:1.7;
+
+    }
+
+    .notice-text strong{
+
+      color:white;
+
+    }
+
+    /* MODAL */
+
+    .modal-overlay{
+
+      position:fixed;
+      inset:0;
+
+      background:rgba(0,0,0,0.8);
+
+      backdrop-filter:blur(10px);
+
+      display:none;
+
+      align-items:center;
+      justify-content:center;
+
+      z-index:200;
+
+    }
+
+    .modal-overlay.open{
+
+      display:flex;
+
+    }
+
+    .modal{
+
+      width:100%;
+      max-width:360px;
+
+      background:var(--bg2);
+
+      border:1px solid var(--border2);
+
+      border-radius:24px;
+
+      padding:30px;
+
+      text-align:center;
+
+    }
+
+    .modal-title{
+
+      font-size:20px;
+      font-weight:600;
+
+      margin-bottom:8px;
+
+    }
+
+    .modal-sub{
+
+      font-size:13px;
+
+      color:var(--muted2);
+
+      line-height:1.6;
+
+      margin-bottom:24px;
+
+    }
+
+    .camera-box{
+
+      width:100%;
+      height:200px;
+
+      border-radius:14px;
+
+      background:var(--bg3);
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      color:var(--muted);
+
+      margin-bottom:18px;
+
+      border:1px solid var(--border);
+
+    }
+#reader{
+
+    width:90vw;
+
+    max-width:380px;
+
+    margin:auto;
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+}
+    .close-btn{
+
+      width:100%;
+
+      padding:12px;
+
+      border:none;
+
+      border-radius:12px;
+
+      background:var(--bg3);
+
+      border:1px solid var(--border);
+
+      color:var(--text);
+
+      cursor:pointer;
+
+    }
+
+    .close-btn:hover{
+
+      border-color:var(--green);
+
+    }
+
+    /* MOBILE */
+
+    @media(max-width:500px){
+
+      nav{
+
+        padding:0 18px;
+
+      }
+
+      .greeting-title{
+
+        font-size:24px;
+
+      }
+
+      main{
+
+        padding:35px 16px 60px;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+<body>
+
+  <!-- NAVBAR -->
+
+  <nav>
+
+    <a href="#" class="nav-logo">
+
+      <div class="logo-mark">
+
+        <svg viewBox="0 0 24 24">
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+        </svg>
+
+      </div>
+
+      <span class="logo-name">
+        AttendEase
+      </span>
+
+    </a>
+
+    <div class="nav-right">
+
+      <span class="nav-time" id="clock">
+        --:--:--
+      </span>
+
+      <button class="logout-btn" onclick="logout()">
+        Sign out
+      </button>
+
+    </div>
+
+  </nav>
+
+  <!-- MAIN -->
+
+  <main>
+
+    <!-- GREETING -->
+
+    <div class="greeting">
+
+      <div class="greeting-label">
+        STUDENT DASHBOARD
+      </div>
+
+      <div class="greeting-title">
+
+        Good
+        <span id="timeOfDay">morning</span>,
+
+        <br>
+
+        <span id="studentName">
+          Student
+        </span>
+
+      </div>
+
+    </div>
+
+    <!-- SCAN CARD -->
+
+    <div class="action-card">
+
+      <div class="action-icon">
+
+        <svg viewBox="0 0 24 24">
+          <path d="M3 5H1v16c0 1.1.9 2 2 2h16v-2H3V5zm18-4H7c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm0 16H7V3h14v14z"/>
+        </svg>
+
+      </div>
+
+      <div class="action-title">
+        Mark your attendance
+      </div>
+
+      <div class="action-sub">
+        Scan the QR code shown by your professor.<br>
+        Verification will happen securely.
+      </div>
+
+      <button class="scan-btn" onclick="openScanModal()">
+        Scan QR Code
+      </button>
+
+    </div>
+
+    <!-- INFO CARD -->
+
+    <div class="info-card">
+
+      <div class="card-label">
+        ACCOUNT STATUS
+      </div>
+
+      <div class="info-flex">
+
+        <div>
+
+          <div class="info-title">
+            Ready for attendance
+          </div>
+
+          <div class="info-sub">
+            Your AttendEase account is active and connected successfully.
+          </div>
+
+        </div>
+
+        <div class="active-badge">
+          ACTIVE
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- NOTICE -->
+
+    <div class="notice-card">
+
+      <div class="notice-icon">
+
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+        </svg>
+
+      </div>
+
+      <div class="notice-text">
+
+        <strong>Important:</strong>
+
+        Keep your attendance secure and never scan for another student.
+        Every attendance entry is monitored and verified by the system.
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- MODAL -->
+
+  <div class="modal-overlay" id="scanModal">
+
+    <div class="modal">
+
+      <div style="font-size:42px;margin-bottom:14px">
+        📷
+      </div>
+
+      <div class="modal-title">
+        Scan QR Code
+      </div>
+
+      <div class="modal-sub">
+        Point your camera towards the QR code displayed by the professor.
+      </div>
+
+      <div id="reader" class="camera-box"></div>
+
+<div
+id="scanResult"
+style="
+margin-top:15px;
+font-size:14px;
+font-weight:600;
+color:#00e599;
+">
+</div>
+
+      <button class="close-btn" onclick="closeScanModal()">
+        Cancel
+      </button>
+
+    </div>
+
+  </div>
+<script src="https://unpkg.com/html5-qrcode"></script>
+<script src="/frontend-js/student.js"></script>
+ 
+
+  <script>
+
+    // CLOCK
+
+    // function updateClock(){
+
+    //   const now = new Date()
+
+    //   document.getElementById('clock')
+    //   .textContent = now.toLocaleTimeString(
+    //     'en-IN',
+    //     { hour12:false }
+    //   )
+
+    //   const hour = now.getHours()
+
+    //   let greeting = 'morning'
+
+    //   if(hour >= 12 && hour < 17){
+
+    //     greeting = 'afternoon'
+
+    //   }
+
+    //   else if(hour >= 17){
+
+    //     greeting = 'evening'
+
+    //   }
+
+    //   document.getElementById('timeOfDay')
+    //   .textContent = greeting
+
+    // }
+
+    // updateClock()
+
+    // setInterval(updateClock,1000)
+
+    // MODAL
+
+   
+
+    function openScanModal(){
+
+  document
+  .getElementById('scanModal')
+  .classList.add('open')
+
+  startScanner();
+
+}
+    
+  function closeScanModal(){
+
+  stopScanner();
+
+  document
+  .getElementById('scanModal')
+  .classList.remove('open');
+
+}
+    // LOGOUT
+
+    function logout(){
+
+      window.location.href='/student-login'
+
+    }
+ 
+
+  </script>
+  
+</body>
+</html>

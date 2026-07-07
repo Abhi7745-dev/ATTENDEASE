@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "express": "^5.2.1",
+    "geolib": "^3.3.14",
+    "mongoose": "^9.6.2",
+    "node": "^26.2.0",
+    "nodemailer": "^8.0.11",
+    "qrcode": "^1.5.4"
+  }
+}

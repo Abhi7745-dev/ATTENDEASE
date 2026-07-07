@@ -1,0 +1,339 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - AttendEase</title>
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+
+    min-height:100vh;
+
+    background:
+    radial-gradient(circle at top right,
+    rgba(0,229,153,0.10),
+    transparent 30%),
+
+    radial-gradient(circle at bottom left,
+    rgba(0,229,153,0.08),
+    transparent 35%),
+
+    #0a0c0f;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:20px;
+
+    color:white;
+
+}
+
+.container{
+
+    width:100%;
+    max-width:1100px;
+
+}
+
+.card{
+
+    background:#111318;
+
+    border:1px solid rgba(0,229,153,0.15);
+
+    border-radius:24px;
+
+    padding:45px;
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,0.5);
+
+    text-align:center;
+
+}
+
+.logo{
+
+    font-size:38px;
+
+    color:#00e599;
+
+    font-weight:bold;
+
+    margin-bottom:10px;
+
+}
+
+.title{
+
+    font-size:30px;
+
+    margin-bottom:8px;
+
+}
+
+.subtitle{
+
+    color:#9ca3af;
+
+    margin-bottom:40px;
+
+}
+
+.roles{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:25px;
+
+}
+
+.role-box{
+
+    background:#181b22;
+
+    border-radius:18px;
+
+    padding:35px 25px;
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    transition:0.3s;
+
+}
+
+.role-box:hover{
+
+    transform:translateY(-6px);
+
+    border-color:#00e599;
+
+    box-shadow:
+    0 10px 25px rgba(0,229,153,0.12);
+
+}
+
+.role-box i{
+
+    font-size:55px;
+
+    color:#00e599;
+
+    margin-bottom:20px;
+
+}
+
+.role-box h2{
+
+    margin-bottom:12px;
+
+}
+
+.role-box p{
+
+    color:#9ca3af;
+
+    font-size:15px;
+
+    margin-bottom:25px;
+
+    line-height:1.5;
+
+}
+
+.role-box button{
+
+    width:100%;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:linear-gradient(
+        90deg,
+        #00e599,
+        #00ffb3
+    );
+
+    color:#0a0c0f;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:0.2s;
+
+}
+
+.role-box button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.logout{
+
+    margin-top:35px;
+
+    padding:12px 30px;
+
+    border:2px solid #00e599;
+
+    background:transparent;
+
+    color:#00e599;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+}
+
+.logout:hover{
+
+    background:#00e599;
+
+    color:#0a0c0f;
+
+}
+
+@media(max-width:900px){
+
+    .roles{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .card{
+
+        padding:25px;
+
+    }
+
+}
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="logo">
+            AttendEase
+        </div>
+
+        <div class="title">
+            Admin Dashboard
+        </div>
+
+        <div class="subtitle">
+            Select which accounts you want to manage
+        </div>
+
+        <div class="roles">
+
+            <!-- Students -->
+
+            <div class="role-box">
+
+                <i class="fa-solid fa-user-graduate"></i>
+
+                <h2>Students</h2>
+
+                <p>
+                    View, search, edit or delete registered students.
+                </p>
+
+                <button onclick="window.location.href='/admin/manage-student'">
+
+                    Manage Students
+
+                </button>
+
+            </div>
+
+            <!-- Professors -->
+
+            <div class="role-box">
+
+                <i class="fa-solid fa-chalkboard-user"></i>
+
+                <h2>Professors</h2>
+
+                <p>
+                    View, search, edit or delete professor accounts.
+                </p>
+
+                <button onclick="window.location.href='/admin/manage-professor'">
+
+                    Manage Professors
+
+                </button>
+
+            </div>
+
+            <!-- Admins -->
+
+            <div class="role-box">
+
+                <i class="fa-solid fa-user-shield"></i>
+
+                <h2>Admins</h2>
+
+                <p>
+                    View and manage administrator accounts.
+                </p>
+
+                <button onclick="window.location.href='/admin/manage-admin'">
+
+                    Manage Admins
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <button
+            class="logout"
+            onclick="window.location.href='/'">
+
+            Back to Home
+
+        </button>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

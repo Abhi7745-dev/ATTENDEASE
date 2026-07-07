@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Signup</title>
+
+
+
+</head>
+<body>
+
+<div class="container">
+<div class="logo">
+    AttendEase
+</div>
+    <div class="title">
+        Student Signup
+    </div>
+
+    <div class="subtitle">
+        Create your account
+    </div>
+<form action="/student-signup" method="POST">
+    <input type="text" name="fullname" placeholder="Enter Full Name">
+
+    <input type="email" name="email" placeholder="Enter Email">
+
+    <input type="text" name="registrationnumber" placeholder="Enter Registration Number">
+
+    <input type="text" name="branch" placeholder="Enter Branch">
+
+    <input type="password" placeholder="Create Password">
+
+    <input type="password" name="password" placeholder="Confirm Password">
+
+    <button onclick="window.location.href='/student-login'" type="submit">
+        Create Account
+    </button>
+</form>
+    <button
+    onclick="window.location.href='/student-login'"
+    style="
+    background:white;
+    color:#1D9E75;
+    border:2px solid #1D9E75;
+    ">
+
+        Back to Login
+
+    </button>
+
+</div>
+
+<style>
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+
+    /* Dark AttendEase Theme */
+    background:
+        radial-gradient(circle at top right, rgba(0,229,153,0.12), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(0,229,153,0.08), transparent 35%),
+        #0a0c0f;
+
+    color:#f0f2f5;
+}
+
+.container{
+    width:100%;
+    max-width:430px;
+    background:#111318;
+    padding:40px 35px;
+    border-radius:22px;
+
+    border:1px solid rgba(0,229,153,0.15);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.5),
+        0 0 30px rgba(0,229,153,0.08);
+
+    backdrop-filter:blur(12px);
+}
+
+.container::before{
+    content:"";
+    display:block;
+    width:80px;
+    height:5px;
+    margin:0 auto 25px;
+    border-radius:50px;
+    background:linear-gradient(90deg,#00e599,#00ffb3);
+}
+
+.logo{
+    text-align:center;
+    font-size:36px;
+    font-weight:700;
+    color:#00e599;
+    margin-bottom:8px;
+}
+
+.title{
+    text-align:center;
+    font-size:28px;
+    font-weight:700;
+    color:#ffffff;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    text-align:center;
+    font-size:15px;
+    color:#9ca3af;
+    margin-bottom:30px;
+}
+
+form{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+input{
+    width:100%;
+    padding:15px;
+    border-radius:12px;
+
+    background:#181b22;
+    color:#f0f2f5;
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    font-size:15px;
+
+    transition:0.25s;
+}
+
+input::placeholder{
+    color:#6b7280;
+}
+
+input:focus{
+    outline:none;
+
+    border-color:#00e599;
+
+    box-shadow:
+        0 0 0 3px rgba(0,229,153,0.12);
+
+    background:#20242c;
+}
+
+button{
+    width:100%;
+    padding:15px;
+
+    border:none;
+    border-radius:12px;
+
+    background:linear-gradient(
+        90deg,
+        #00e599,
+        #00ffb3
+    );
+
+    color:#0a0c0f;
+
+    font-size:16px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:0.25s;
+}
+
+button:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(0,229,153,0.25);
+
+}
+
+.secondary-btn{
+
+    margin-top:12px;
+
+    background:transparent;
+
+    color:#00e599;
+
+    border:2px solid #00e599;
+
+}
+
+.secondary-btn:hover{
+
+    background:#00e599;
+
+    color:#0a0c0f;
+
+}
+
+a{
+
+    color:#00e599;
+
+    text-decoration:none;
+
+}
+
+a:hover{
+
+    text-decoration:underline;
+
+}
+
+@media(max-width:500px){
+
+    .container{
+
+        padding:28px 22px;
+
+    }
+
+    .logo{
+
+        font-size:30px;
+
+    }
+
+    .title{
+
+        font-size:24px;
+
+    }
+
+}
+
+</style>
+</body>
+</html>

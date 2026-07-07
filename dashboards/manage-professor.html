@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Professors</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#0a0c0f;
+    color:white;
+    min-height:100vh;
+    padding:30px;
+}
+
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+nav h1{
+    color:#00e599;
+    font-size:32px;
+}
+
+nav button{
+    padding:10px 18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#00e599;
+    color:#111;
+    font-weight:bold;
+}
+
+.search-box{
+    display:flex;
+    gap:10px;
+    margin-bottom:25px;
+}
+
+.search-box input{
+    flex:1;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#181b22;
+    color:white;
+}
+
+.search-box button{
+    padding:0 20px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#00e599;
+    font-weight:bold;
+}
+
+.cards-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:20px;
+}
+
+.professor-card{
+    background:#111318;
+    padding:20px;
+    border-radius:16px;
+    border:1px solid rgba(0,229,153,.2);
+}
+
+.professor-card h2{
+    color:#00e599;
+    margin-bottom:10px;
+}
+
+.professor-card p{
+    margin:8px 0;
+}
+
+.professor-card button{
+    margin-top:15px;
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#00e599;
+    font-weight:bold;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.7);
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content{
+    width:90%;
+    max-width:500px;
+    background:#111318;
+    padding:25px;
+    border-radius:15px;
+}
+
+.modal-content p{
+    margin:12px 0;
+}
+
+#deleteBtn{
+    width:100%;
+    margin-top:20px;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:red;
+    color:white;
+    cursor:pointer;
+}
+
+#closeBtn{
+    width:100%;
+    margin-top:10px;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+
+<button onclick="history.back()">
+← Back
+</button>
+
+<h1>
+👨‍🏫 Manage Professors
+</h1>
+
+</nav>
+
+<div class="search-box">
+
+<input
+type="email"
+id="searchInput"
+placeholder="Search Professor by Email">
+
+<button onclick="searchProfessor()">
+Search
+</button>
+
+</div>
+
+<div
+id="professorContainer"
+class="cards-container">
+</div>
+
+<div
+id="professorModal"
+class="modal">
+
+<div class="modal-content">
+
+<h2>Professor Details</h2>
+
+<p><strong>Name:</strong> <span id="modalName"></span></p>
+
+<p><strong>Email:</strong> <span id="modalEmail"></span></p>
+
+<p><strong>Password:</strong> <span id="modalPassword"></span></p>
+
+<p><strong>Department:</strong> <span id="modalDepartment"></span></p>
+
+<button
+id="deleteBtn"
+onclick="deleteProfessor()">
+
+Delete Professor
+
+</button>
+
+<button
+id="closeBtn"
+onclick="closeModal()">
+
+Close
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const professorContainer =
+document.getElementById("professorContainer");
+
+let selectedProfessorId = "";
+
+/* ---------- Load All Professors ---------- */
+
+async function loadProfessors(){
+
+    const response =
+    await fetch("/admin/get-professors");
+
+    const professors =
+    await response.json();
+
+    professorContainer.innerHTML = "";
+
+    professors.forEach(professor=>{
+
+        professorContainer.innerHTML += `
+
+        <div class="professor-card">
+
+            <h2>Name:${professor.fullname}</h2>
+
+            <p>Mail:${professor.email}</p>
+
+            <p>Department:${professor.department}</p>
+
+            <button
+            onclick="viewProfessor('${professor._id}')">
+
+            View
+
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+/* ---------- Search Professor ---------- */
+
+async function searchProfessor(){
+
+    const email =
+    document
+    .getElementById("searchInput")
+    .value
+    .trim();
+
+    if(email===""){
+
+        loadProfessors();
+
+        return;
+
+    }
+
+    const response =
+    await fetch(`/admin/search-professor?email=${email}`);
+
+    const professor =
+    await response.json();
+
+    professorContainer.innerHTML = "";
+
+    if(!professor){
+
+        professorContainer.innerHTML =
+        "<h2>No Professor Found</h2>";
+
+        return;
+
+    }
+
+    professorContainer.innerHTML = `
+
+    <div class="professor-card">
+
+        <h2>${professor.fullname}</h2>
+
+        <p>Name:${professor.email}</p>
+
+        <p>Department:${professor.department}</p>
+
+        <button
+        onclick="viewProfessor('${professor._id}')">
+
+        View
+
+        </button>
+
+    </div>
+
+    `;
+
+}
+
+/* ---------- View Professor ---------- */
+
+async function viewProfessor(id){
+
+    selectedProfessorId = id;
+
+    const response =
+    await fetch(`/admin/view-professor/${id}`);
+
+    const professor =
+    await response.json();
+
+    document.getElementById("modalName").innerText =
+    professor.fullname;
+
+    document.getElementById("modalEmail").innerText =
+    professor.email;
+
+    document.getElementById("modalPassword").innerText =
+    professor.password;
+
+    document.getElementById("modalDepartment").innerText =
+    professor.department;
+
+    document.getElementById("professorModal").style.display =
+    "flex";
+
+}
+
+/* ---------- Delete Professor ---------- */
+
+async function deleteProfessor(){
+
+    const response =
+    await fetch(
+
+        `/admin/delete-professor/${selectedProfessorId}`,
+
+        {
+            method:"DELETE"
+        }
+
+    );
+
+    const data =
+    await response.json();
+
+    alert(data.message);
+
+    closeModal();
+
+    loadProfessors();
+
+}
+
+/* ---------- Close Modal ---------- */
+
+function closeModal(){
+
+    document.getElementById("professorModal").style.display =
+    "none";
+
+}
+
+/* ---------- Load on Startup ---------- */
+
+window.onload =
+loadProfessors;
+
+</script>
+
+</body>
+</html>

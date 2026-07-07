@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Admins</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#0a0c0f;
+    color:white;
+    min-height:100vh;
+    padding:30px;
+}
+
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+nav h1{
+    color:#00e599;
+    font-size:32px;
+}
+
+nav button{
+    padding:10px 18px;
+    background:transparent;
+    color:#00e599;
+    border:2px solid #00e599;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+nav button:hover{
+    background:#00e599;
+    color:#0a0c0f;
+}
+
+.search-box{
+    display:flex;
+    gap:10px;
+    margin-bottom:30px;
+}
+
+.search-box input{
+    flex:1;
+    padding:14px;
+    border-radius:10px;
+    border:none;
+    background:#181b22;
+    color:white;
+}
+
+.search-box button{
+    padding:14px 24px;
+    border:none;
+    border-radius:10px;
+    background:#00e599;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.cards-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+}
+
+.admin-card{
+    background:#111318;
+    border-radius:18px;
+    padding:20px;
+    border:1px solid rgba(0,229,153,.15);
+}
+
+.admin-card h2{
+    color:#00e599;
+    margin-bottom:10px;
+}
+
+.admin-card p{
+    margin-bottom:8px;
+    color:#cfcfcf;
+}
+
+.admin-card button{
+    width:100%;
+    margin-top:10px;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#00e599;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.75);
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content{
+    background:#111318;
+    width:90%;
+    max-width:500px;
+    padding:30px;
+    border-radius:18px;
+}
+
+.modal-content h2{
+    color:#00e599;
+    margin-bottom:20px;
+}
+
+.modal-content p{
+    margin-bottom:12px;
+}
+
+.buttons{
+    display:flex;
+    gap:15px;
+    margin-top:20px;
+}
+
+#deleteBtn{
+    flex:1;
+    padding:12px;
+    background:#ef4444;
+    color:white;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+#closeBtn{
+    flex:1;
+    padding:12px;
+    background:#2c313a;
+    color:white;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+
+    <button onclick="history.back()">
+        ← Back
+    </button>
+
+    <h1>
+        👨‍💼 Manage Admins
+    </h1>
+
+</nav>
+
+<div class="search-box">
+
+    <input
+        type="email"
+        id="searchInput"
+        placeholder="Search Admin by Email">
+
+    <button onclick="searchAdmin()">
+        🔍 Search
+    </button>
+
+</div>
+
+<div
+    class="cards-container"
+    id="adminContainer">
+
+</div>
+
+<div
+    class="modal"
+    id="adminModal">
+
+    <div class="modal-content">
+
+        <h2>Admin Details</h2>
+
+        <p>
+            <strong>Name:</strong>
+            <span id="modalName"></span>
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            <span id="modalEmail"></span>
+        </p>
+
+        <p>
+            <strong>Password:</strong>
+            <span id="modalPassword"></span>
+        </p>
+
+        <div class="buttons">
+
+            <button
+                id="deleteBtn"
+                onclick="deleteAdmin()">
+
+                🗑️ Delete
+
+            </button>
+
+            <button
+                id="closeBtn"
+                onclick="closeModal()">
+
+                Close
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+let selectedAdminId = "";
+
+const adminContainer =
+document.getElementById("adminContainer");
+
+async function loadAdmins(){
+
+    const response =
+    await fetch("/admin/get-admins");
+
+    const admins =
+    await response.json();
+
+    adminContainer.innerHTML = "";
+
+    admins.forEach(admin=>{
+
+        adminContainer.innerHTML += `
+
+        <div class="admin-card">
+
+            <h2>Name:${admin.fullname}</h2>
+
+            <p>Mail:${admin.email}</p>
+
+            <button onclick="viewAdmin('${admin._id}')">
+
+                View
+
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+async function searchAdmin(){
+
+    const email =
+    document.getElementById("searchInput").value.trim();
+
+    if(email===""){
+        loadAdmins();
+        return;
+    }
+
+    const response =
+    await fetch(`/admin/search-admin?email=${email}`);
+
+    const admin =
+    await response.json();
+
+    adminContainer.innerHTML="";
+
+    if(!admin){
+
+        adminContainer.innerHTML =
+        "<h3>No Admin Found</h3>";
+
+        return;
+
+    }
+
+    adminContainer.innerHTML = `
+
+    <div class="admin-card">
+
+        <h2>Name:${admin.fullname}</h2>
+
+        <p>Mail:${admin.email}</p>
+
+        <button onclick="viewAdmin('${admin._id}')">
+
+            View
+
+        </button>
+
+    </div>
+
+    `;
+
+}
+
+async function viewAdmin(id){
+
+    selectedAdminId = id;
+
+    const response =
+    await fetch(`/admin/view-admin/${id}`);
+
+    const admin =
+    await response.json();
+
+    document.getElementById("modalName").innerText =
+    admin.fullname;
+
+    document.getElementById("modalEmail").innerText =
+    admin.email;
+
+    document.getElementById("modalPassword").innerText =
+    admin.password;
+
+    document.getElementById("adminModal").style.display =
+    "flex";
+
+}
+
+async function deleteAdmin(){
+
+    const response =
+    await fetch(`/admin/delete-admin/${selectedAdminId}`,{
+
+        method:"DELETE"
+
+    });
+
+    const data =
+    await response.json();
+
+    alert(data.message);
+
+    closeModal();
+
+    loadAdmins();
+
+}
+
+function closeModal(){
+
+    document.getElementById("adminModal").style.display =
+    "none";
+
+}
+
+window.onload = loadAdmins;
+
+</script>
+
+</body>
+</html>

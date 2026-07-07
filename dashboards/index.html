@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Role</title>
+
+    <link rel="stylesheet" href="role-select.css">
+
+    <!-- icons -->
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1>AttendEase</h1>
+            <p>Select your role to continue</p>
+
+            <div class="roles">
+
+                <!-- Student -->
+                <div class="role-box">
+                    <i class="fa-solid fa-user-graduate"></i>
+
+                    <h2>Student</h2>
+
+                    <p>
+                        Mark attendance and view records
+                    </p>
+
+                    <button onclick="window.location.href='/student-login'">
+                        Continue
+                    </button>
+                </div>
+
+                <!-- Professor -->
+                <div class="role-box">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+
+                    <h2>Professor</h2>
+
+                    <p>
+                        Generate QR and manage sessions
+                    </p>
+
+                    <button onclick="window.location.href='/professor-login'">
+                        Continue
+                    </button>
+                </div>
+
+                <!-- Admin -->
+                <div class="role-box">
+                    <i class="fa-solid fa-user-shield"></i>
+
+                    <h2>Admin</h2>
+
+                    <p>
+                        Manage users and attendance system
+                    </p>
+
+                    <button onclick="window.location.href='/admin-login'">
+                        Continue
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+<style>
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#eef7ff 0%,#f8fbff 50%,#e8fff5 100%);
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:1200px;
+}
+
+.card{
+    background:#ffffff;
+    border-radius:24px;
+    padding:50px 40px;
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.08),
+        0 5px 15px rgba(29,158,117,0.08);
+    text-align:center;
+}
+
+.card::before{
+    content:"";
+    display:block;
+    width:80px;
+    height:6px;
+    margin:0 auto 25px;
+    border-radius:10px;
+    background:linear-gradient(90deg,#1D9E75,#4dd6a7);
+}
+
+.card h1{
+    font-size:42px;
+    color:#1D9E75;
+    margin-bottom:10px;
+}
+
+.card p{
+    color:#666;
+    font-size:16px;
+    margin-bottom:40px;
+}
+
+.roles{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:25px;
+}
+
+.role-box{
+    background:#fafafa;
+    border:1px solid #e8e8e8;
+    border-radius:20px;
+    padding:35px 25px;
+    transition:all 0.3s ease;
+}
+
+.role-box:hover{
+    transform:translateY(-8px);
+    border-color:#1D9E75;
+    box-shadow:0 12px 30px rgba(29,158,117,0.15);
+}
+
+.role-box i{
+    font-size:60px;
+    color:#1D9E75;
+    margin-bottom:20px;
+}
+
+.role-box h2{
+    font-size:26px;
+    color:#222;
+    margin-bottom:12px;
+}
+
+.role-box p{
+    color:#777;
+    font-size:15px;
+    line-height:1.6;
+    margin-bottom:25px;
+}
+
+.role-box button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(90deg,#1D9E75,#23b887);
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.role-box button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 20px rgba(29,158,117,0.25);
+}
+
+@media(max-width:768px){
+
+    .card{
+        padding:30px 20px;
+    }
+
+    .card h1{
+        font-size:34px;
+    }
+
+    .roles{
+        grid-template-columns:1fr;
+    }
+
+}
+</style>
+
+</body>
+</html>

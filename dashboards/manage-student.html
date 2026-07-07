@@ -1,0 +1,617 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Students</title>
+
+<style>
+    
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+
+    background:#0a0c0f;
+
+    color:#ffffff;
+
+    min-height:100vh;
+
+    padding:30px;
+
+}
+
+/* Navbar */
+
+nav{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+}
+
+nav h1{
+
+    color:#00e599;
+
+    font-size:32px;
+
+}
+
+nav button{
+
+    padding:10px 18px;
+
+    background:transparent;
+
+    color:#00e599;
+
+    border:2px solid #00e599;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+}
+
+nav button:hover{
+
+    background:#00e599;
+
+    color:#0a0c0f;
+
+}
+
+/* Search */
+
+.search-section{
+
+    margin-bottom:30px;
+
+}
+
+.search-section input{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#181b22;
+
+    color:white;
+
+    font-size:15px;
+
+    outline:none;
+
+    border:1px solid rgba(0,229,153,0.15);
+
+}
+
+.search-section input:focus{
+
+    border-color:#00e599;
+
+}
+
+/* Cards */
+
+.cards-container{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(320px,1fr));
+
+    gap:20px;
+
+}
+
+.student-card{
+
+    background:#111318;
+
+    border:1px solid rgba(0,229,153,0.15);
+
+    border-radius:18px;
+
+    padding:20px;
+
+    transition:.3s;
+
+}
+
+.student-card:hover{
+
+    transform:translateY(-5px);
+
+    border-color:#00e599;
+
+    box-shadow:
+    0 8px 25px rgba(0,229,153,0.10);
+
+}
+
+.student-card h2{
+
+    color:#00e599;
+
+    margin-bottom:10px;
+
+    font-size:22px;
+
+}
+
+.student-card p{
+
+    color:#b8bcc5;
+
+    margin-bottom:8px;
+
+    font-size:14px;
+
+}
+
+.student-card button{
+
+    margin-top:15px;
+
+    width:100%;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#00e599;
+
+    color:#0a0c0f;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+}
+
+.student-card button:hover{
+
+    background:#00ffb3;
+
+}
+
+/* Modal */
+
+.modal{
+
+    display:none;
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:100%;
+
+    background:rgba(0,0,0,0.75);
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:1000;
+
+}
+
+.modal-content{
+
+    background:#111318;
+
+    width:90%;
+
+    max-width:500px;
+
+    padding:30px;
+
+    border-radius:18px;
+
+    border:1px solid rgba(0,229,153,0.2);
+
+}
+
+.modal-content h2{
+
+    color:#00e599;
+
+    margin-bottom:20px;
+
+}
+
+.modal-content p{
+
+    margin-bottom:12px;
+
+    color:#d1d5db;
+
+}
+
+/* Buttons inside modal */
+
+.buttons{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:25px;
+
+    margin-bottom:15px;
+
+}
+
+#editBtn{
+
+    flex:1;
+
+    padding:12px;
+
+    background:#00e599;
+
+    color:#0a0c0f;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+}
+
+#deleteBtn{
+
+    flex:1;
+
+    padding:12px;
+
+    background:#ef4444;
+
+    color:white;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+}
+
+.modal-content > button{
+
+    width:100%;
+
+    padding:12px;
+
+    background:#222831;
+
+    color:white;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+}
+
+.modal-content > button:hover{
+
+    background:#333b46;
+
+}
+
+/* Mobile */
+
+@media(max-width:600px){
+
+    nav{
+
+        flex-direction:column;
+
+        gap:15px;
+
+    }
+
+    nav h1{
+
+        font-size:26px;
+
+    }
+
+}
+.search-box{
+
+    display:flex;
+
+    gap:12px;
+
+}
+
+.search-box input{
+
+    flex:1;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#181b22;
+
+    color:white;
+
+    border:1px solid rgba(0,229,153,0.15);
+
+}
+
+.search-box button{
+
+    padding:0 24px;
+
+    background:#00e599;
+
+    color:#0a0c0f;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    transition:0.3s;
+
+}
+
+.search-box button:hover{
+
+    background:#00ffb3;
+
+}
+</style>
+
+</head>
+<body>
+
+<nav>
+
+    <button onclick="history.back()">
+        ← Back
+    </button>
+
+    <h1>
+        👨‍🎓 Manage Students
+    </h1>
+
+</nav>
+
+<section class="search-section">
+    <div class="search-box">
+
+        <input
+            type="email"
+            id="searchInput"
+            placeholder="Search by student email...">
+
+        <button onclick="searchstudent()">
+            🔍 Search
+        </button>
+
+    </div>
+</section>
+<section
+    class="cards-container"
+    id="studentContainer">
+
+    <!-- JavaScript will insert cards here -->
+
+</section>
+
+<!-- Hidden popup -->
+
+<div
+    class="modal"
+    id="studentModal">
+
+    <div class="modal-content">
+
+        <h2>
+            Student Details
+        </h2>
+
+        <p>
+            <strong>Name:</strong>
+            <span id="modalName"></span>
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            <span id="modalEmail"></span>
+        </p>
+        <p>
+    <strong>Password:</strong>
+    <span id="modalPassword"></span>
+</p>
+        <p>
+            <strong>Registration:</strong>
+            <span id="modalRegistration"></span>
+        </p>
+
+        <p>
+            <strong>Branch:</strong>
+            <span id="modalBranch"></span>
+        </p>
+
+        <div class="buttons">
+            <button
+                id="deleteBtn"
+                onclick="deleteStudent()">
+
+                🗑️ Delete
+
+            </button>
+
+        </div>
+
+        <button
+            onclick="closeModal()">
+
+            Close
+
+        </button>
+
+    </div>
+
+</div>
+<script>
+    let selectedStudentid="";
+   const studentContainer =
+document.getElementById("studentContainer");
+    async function loadStudents() {
+
+    const response = await fetch("/admin/get-students");
+
+    const students = await response.json();
+
+studentContainer.innerHTML = "";
+
+students.forEach(student => {
+    studentContainer.innerHTML += `
+        <div class="student-card">
+            <h2>${student.fullname}</h2>
+            <p>Name: ${student.email}</p>
+            <p>Branch: ${student.branch}</p>
+            <p>Registration no.: ${student.registrationnumber}</p>
+            <button onclick="viewStudent('${student._id}')">
+                View
+            </button>
+        </div>
+    `;
+});
+
+}
+
+async function searchstudent(){
+    const email=document.getElementById("searchInput").value.trim();
+    const response=await fetch(`/admin/search-student?email=${email}`);
+    const student=await response.json();
+    studentContainer.innerHTML = "";
+
+    if (!student) {
+
+        studentContainer.innerHTML =
+        "<h3>No student found.</h3>";
+
+        return;
+
+    }
+
+    studentContainer.innerHTML = `
+
+    <div class="student-card">
+
+        <h2>${student.fullname}</h2>
+
+        <p>Name: ${student.email}</p>
+
+        <p>Branch: ${student.branch}</p>
+
+        <p>Registration no.: ${student.registrationnumber}</p>
+
+        <button onclick="viewStudent('${student._id}')">
+            View
+        </button>
+
+    </div>
+
+    `;
+}
+
+async function viewStudent(id){
+    const response=await fetch(`/admin/view-student/${id}`);
+    const student=await response.json();
+    selectedStudentid=id;
+
+     document.getElementById("modalName").innerText =
+    student.fullname;
+
+    document.getElementById("modalEmail").innerText =
+    student.email;
+
+    document.getElementById("modalPassword").innerText =
+    student.password;
+
+    document.getElementById("modalRegistration").innerText =
+    student.registrationnumber;
+
+    document.getElementById("modalBranch").innerText =
+    student.branch;
+
+    document.getElementById("studentModal").style.display =
+    "flex";
+}
+function closeModal() {
+    document.getElementById("studentModal").style.display = "none";
+}
+
+async function deleteStudent(){
+    const response = await fetch(
+        `/admin/delete-student/${selectedStudentid}`,
+        {
+            method: "DELETE"
+        }
+    );
+
+    const data = await response.json();
+
+    alert(data.message);
+
+    document.getElementById("studentModal").style.display = "none";
+
+    loadStudents();
+}
+ window.onload=function() {
+        loadStudents();
+    }
+    
+</script>
+</body>
+</html>
+

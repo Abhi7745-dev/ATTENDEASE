@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AttendEase — Professor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0a0c0f;
+      --bg2:     #111318;
+      --bg3:     #181b22;
+      --border:  rgba(255,255,255,0.07);
+      --border2: rgba(255,255,255,0.13);
+      --green:   #00e599;
+      --gdim:    rgba(0,229,153,0.1);
+      --gglow:   rgba(0,229,153,0.2);
+      --amber:   #f59e0b;
+      --red:     #f87171;
+      --text:    #f0f2f5;
+      --muted:   #6b7280;
+      --muted2:  #9ca3af;
+    }
+
+    body {
+      font-family: 'Sora', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* subtle grid */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,153,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,153,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 58px;
+      background: rgba(10,12,15,0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-left { display: flex; align-items: center; gap: 10px; }
+    .logo-mark {
+      width: 28px; height: 28px; border-radius: 7px;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: #0a0c0f; font-weight: 700;
+    }
+    .nav-title { font-size: 14px; font-weight: 600; }
+    .nav-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; color: var(--green);
+      background: var(--gdim);
+      border: 1px solid rgba(0,229,153,0.2);
+      border-radius: 99px; padding: 3px 10px;
+      letter-spacing: 0.08em;
+    }
+    .sign-out {
+      font-family: 'Sora', sans-serif; font-size: 12px;
+      color: var(--muted2); background: var(--bg3);
+      border: 1px solid var(--border2); border-radius: 7px;
+      padding: 5px 13px; cursor: pointer; transition: all 0.2s;
+    }
+    .sign-out:hover { color: var(--text); border-color: var(--green); }
+
+    /* ── Layout ── */
+    main {
+      position: relative; z-index: 1;
+      max-width: 520px; width: 100%;
+      margin: 0 auto; padding: 48px 24px 80px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+
+    /* ── Greeting ── */
+    .greeting { margin-bottom: 8px; }
+    .greeting-sup {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; color: var(--green);
+      letter-spacing: 0.12em; margin-bottom: 6px;
+    }
+    .greeting-name { font-size: 22px; font-weight: 600; }
+    .greeting-name span { color: var(--green); }
+
+    /* ── QR card ── */
+    .qr-card {
+      background: var(--gdim);
+      border: 1px solid rgba(0,229,153,0.18);
+      border-radius: 18px; padding: 24px;
+      position: relative; overflow: hidden;
+    }
+    .qr-card::after {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 180px; height: 180px;
+      background: var(--gglow);
+      border-radius: 50%; filter: blur(60px);
+      pointer-events: none;
+    }
+
+    .qr-card-head {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .qr-card-title { font-size: 14px; font-weight: 600; }
+    .qr-card-sub { font-size: 11px; color: var(--muted2); margin-top: 2px; }
+
+    /* fields */
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .field-wrap { display: flex; flex-direction: column; gap: 4px; }
+    .field-lbl {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; color: var(--muted); letter-spacing: 0.1em;
+    }
+    .field {
+      font-family: 'Sora', sans-serif; font-size: 12px;
+      color: var(--text); background: rgba(0,0,0,0.35);
+      border: 1px solid var(--border2); border-radius: 9px;
+      padding: 9px 11px; outline: none;
+      transition: border-color 0.2s; width: 100%;
+    }
+    .field:focus { border-color: var(--green); }
+    .field option { background: var(--bg2); }
+
+    /* generate button */
+    .gen-btn {
+      font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 600;
+      width: 100%; padding: 12px; border-radius: 11px;
+      border: none; background: var(--green); color: #0a0c0f;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .gen-btn:hover { background: #00ffaa; transform: translateY(-1px); box-shadow: 0 8px 20px var(--gglow); }
+    .gen-btn:active { transform: translateY(0); }
+
+    /* ── QR display ── */
+    .qr-result {
+      display: none;
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 14px; padding: 20px;
+      text-align: center; margin-top: 14px;
+    }
+    .qr-result.show { display: block; }
+
+    /* QR image wrapper — white bg so QR is readable */
+    .qr-img-wrap {
+      display: inline-block;
+      background: #fff; border-radius: 10px;
+      padding: 10px; margin-bottom: 12px;
+    }
+    .qr-img-wrap img { width: 160px; height: 160px; display: block; }
+
+    .qr-class-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; color: var(--green);
+      font-weight: 500; margin-bottom: 8px;
+    }
+
+    /* timer bar */
+    .timer-wrap { margin-bottom: 14px; }
+    .timer-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; color: var(--amber);
+      margin-bottom: 6px;
+    }
+    .timer-bar-bg {
+      width: 100%; height: 4px;
+      background: rgba(245,158,11,0.15);
+      border-radius: 99px; overflow: hidden;
+    }
+    .timer-bar {
+      height: 100%; background: var(--amber);
+      border-radius: 99px;
+      transition: width 1s linear;
+      width: 100%;
+    }
+
+    /* end session button */
+    .end-btn {
+      font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 500;
+      padding: 9px 20px; border-radius: 9px;
+      background: rgba(248,113,113,0.08);
+      border: 1px solid rgba(248,113,113,0.2);
+      color: var(--red); cursor: pointer; transition: all 0.2s;
+    }
+    .end-btn:hover { background: rgba(248,113,113,0.16); }
+
+    /* ── Notice card ── */
+    .notice {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px 18px;
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .notice-icon {
+      width: 32px; height: 32px; flex-shrink: 0;
+      border-radius: 9px;
+      background: rgba(245,158,11,0.1);
+      border: 1px solid rgba(245,158,11,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+    }
+    .notice-text { font-size: 12px; color: var(--muted2); line-height: 1.6; }
+    .notice-text strong { color: var(--text); font-weight: 500; }
+
+    /* ── Dispatch button ── */
+    .dispatch-btn {
+      display: flex; align-items: center; gap: 14px;
+      width: 100%; padding: 18px 20px;
+      background: var(--bg2);
+      border: 1px solid rgba(0,229,153,0.2);
+      border-radius: 14px; cursor: pointer;
+      font-family: 'Sora', sans-serif;
+      transition: all 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .dispatch-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(120deg, var(--gdim) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .dispatch-btn:hover {
+      border-color: rgba(0,229,153,0.4);
+      background: rgba(0,229,153,0.06);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(0,229,153,0.08);
+    }
+    .dispatch-btn:active { transform: translateY(0); }
+    .dispatch-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      border-radius: 12px;
+      background: rgba(0,229,153,0.1);
+      border: 1px solid rgba(0,229,153,0.18);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .dispatch-text { text-align: left; }
+    .dispatch-title { font-size: 13px; font-weight: 600; color: var(--green); margin-bottom: 3px; }
+    .dispatch-sub { font-size: 11px; color: var(--muted2); }
+    .dispatch-arrow { margin-left: auto; font-size: 16px; color: rgba(0,229,153,0.35); transition: all 0.2s; flex-shrink: 0; }
+    .dispatch-btn:hover .dispatch-arrow { transform: translateX(4px); color: var(--green); }
+
+    @media (max-width: 480px) {
+      nav { padding: 0 16px; }
+      main { padding: 28px 16px 60px; }
+      .greeting-name { font-size: 18px; }
+      .field-row { grid-template-columns: 1fr; }
+    }
+  </style>
+  
+</head>
+<body>
+
+  <nav>
+    <div class="nav-left">
+      <div class="logo-mark">✓</div>
+      <span class="nav-title">AttendEase</span>
+      <span class="nav-badge">PROFESSOR</span>
+    </div>
+    <button class="sign-out" onclick="logout()">Sign out</button>
+  </nav>
+
+  <main>
+
+    <!-- greeting -->
+    <div class="greeting">
+      <div class="greeting-sup">DASHBOARD</div>
+      <div class="greeting-name">Dr. <span id="profName">Professor</span></div>
+    </div>
+
+    <!-- generate QR card -->
+    <div class="qr-card">
+      <div class="qr-card-head">
+        <div>
+          <div class="qr-card-title">Start attendance session</div>
+          <div class="qr-card-sub">Select class and room then generate QR</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-wrap">
+          <span class="field-lbl">CLASS</span>
+          <select class="field" id="className">
+            <option value="">Select class</option>
+            <option value="CS101">CS101 — Data Structures</option>
+            <option value="CS202">CS202 — Algorithms</option>
+            <option value="CS301">CS301 — OS</option>
+            <option value="Math202">Math202 — Calculus</option>
+          </select>
+        </div>
+        <div class="field-wrap">
+          <span class="field-lbl">ROOM</span>
+          <input class="field" id="roomName" type="text" placeholder="e.g. Room 204" />
+        </div>
+      </div>
+
+      <button class="gen-btn" onclick="generateQR()">⚡ Generate QR Code</button>
+
+      <!-- QR shown after generate is clicked -->
+      <div class="qr-result" id="qrResult">
+
+        <div class="qr-img-wrap">
+          <img id="qrImage" src="" alt="QR Code" />
+        </div>
+
+        <div class="qr-class-name" id="qrClassName">CS101</div>
+
+        <!-- countdown timer with progress bar -->
+        <div class="timer-wrap">
+          <div class="timer-label">⏱ Expires in <span id="timerText">5:00</span></div>
+          <div class="timer-bar-bg">
+            <div class="timer-bar" id="timerBar"></div>
+          </div>
+        </div>
+
+        <button class="end-btn" onclick="endSession()">End Session</button>
+
+      </div>
+    </div>
+
+    <!-- notice -->
+    <div class="notice">
+      <div class="notice-icon">⚠️</div>
+      <div class="notice-text">
+        <strong>QR refreshes every 5 minutes.</strong>
+        Students must scan and complete fingerprint verification within this window.
+        Click End Session when the class is done.
+      </div>
+    </div>
+
+    <!-- dispatch report button -->
+    <button class="dispatch-btn" onclick="dispatchReport()">
+      <div class="dispatch-icon">📩</div>
+      <div class="dispatch-text">
+        <div class="dispatch-title">Dispatch attendance report to inbox</div>
+        <div class="dispatch-sub">Excel sheet sent directly to your registered email</div>
+      </div>
+      <span class="dispatch-arrow">→</span>
+    </button>
+
+  </main>
+ <script>
+
+let currentSessionId = "";
+
+async function generateQR() {
+
+    const className =
+        document.getElementById("className").value;
+
+    const roomName =
+        document.getElementById("roomName").value;
+
+    if (!className) {
+        alert("Select a class");
+        return;
+    }
+
+    if (!roomName) {
+        alert("Enter room number");
+        return;
+    }
+
+   navigator.geolocation.getCurrentPosition(
+
+    async function(position){
+
+        const latitude =
+        position.coords.latitude;
+
+        const longitude =
+        position.coords.longitude;
+
+        const accuracy =
+        position.coords.accuracy;
+
+        if(accuracy > 100){
+
+            alert(
+                "GPS accuracy is poor (" +
+                Math.round(accuracy) +
+                " m). Please move near a window and try again."
+            );
+
+            return;
+        }
+
+        const response =
+        await fetch("/generate-qr",{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+
+                className,
+                roomName,
+                latitude,
+                longitude
+
+            })
+
+        });
+
+        const data =
+        await response.json();
+
+        currentSessionId =
+        data.sessionId;
+
+        document.getElementById("qrImage").src =
+        data.qrImage;
+
+        document.getElementById("qrResult")
+        .classList.add("show");
+
+    },
+
+    function(error){
+
+        alert("Location permission required");
+
+    },
+
+    {
+
+        enableHighAccuracy:true,
+        timeout:10000,
+        maximumAge:0
+
+    }
+
+);
+
+}
+
+function endSession() {
+
+    document
+        .getElementById("qrResult")
+        .classList.remove("show");
+
+}
+
+function logout() {
+
+    window.location.href = "/";
+
+}
+
+function dispatchReport() {
+
+    if (!currentSessionId) {
+
+        alert("Please generate a QR session first.");
+        return;
+
+    }
+
+    window.location.href =
+        `/dispatch-report?email=${professorEmail}&sessionId=${currentSessionId}`;
+
+}
+
+const params =
+    new URLSearchParams(window.location.search);
+
+const professorEmail =
+    params.get("email");
+
+</script>
+
+</body>
+</html>
