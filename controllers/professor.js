@@ -118,7 +118,7 @@ async function dispatchReport(req, res) {
         if (records.length === 0) {
 
             return res.send(
-                "No attendance found for this session."
+                "No data was stored in excel."
             );
 
         }
