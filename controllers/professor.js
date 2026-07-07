@@ -117,129 +117,153 @@ async function generateQR(req, res) {
 
 }
 
-async function dispatchReport(req,res){
+const fs = require("fs");
 
-    const workbook =
-    new ExcelJS.Workbook();
+async function dispatchReport(req, res) {
 
-    const worksheet =
-    workbook.addWorksheet(
-        'Attendance Report'
-    );
+    try {
 
-    worksheet.columns = [
+        const sessionId = req.query.sessionId;
+        const professorEmail = req.query.email;
 
-        {
-            header:'Name',
-            key:'studentName',
-            width:25
-        },
+        const records = await Attendance.find({
+            sessionId: sessionId
+        });
 
-        {
-            header:'Email',
-            key:'studentEmail',
-            width:30
-        },
+        if (records.length === 0) {
 
-        {
-            header:'Registration Number',
-            key:'registrationNumber',
-            width:25
-        },
+            return res.send(
+                "No attendance found for this session."
+            );
 
-        {
-            header:'Branch',
-            key:'branch',
-            width:15
-        },
-
-        {
-            header:'Class',
-            key:'className',
-            width:20
-        },
-
-        {
-            header:'Room',
-            key:'roomName',
-            width:15
         }
 
-    ];
+        const workbook = new ExcelJS.Workbook();
 
-    const sessionId =
-req.query.sessionId;
+        const worksheet = workbook.addWorksheet(
+            "Attendance Report"
+        );
 
-const records =
-await Attendance.find({
+        worksheet.columns = [
 
-    sessionId:
-    sessionId
+            {
+                header: "Name",
+                key: "studentName",
+                width: 25
+            },
 
-});
+            {
+                header: "Email",
+                key: "studentEmail",
+                width: 30
+            },
 
-    records.forEach((student)=>{
+            {
+                header: "Registration Number",
+                key: "registrationNumber",
+                width: 25
+            },
 
-        worksheet.addRow({
+            {
+                header: "Branch",
+                key: "branch",
+                width: 15
+            },
 
-            studentName:
-            student.studentName,
+            {
+                header: "Class",
+                key: "className",
+                width: 20
+            },
 
-            studentEmail:
-            student.studentEmail,
+            {
+                header: "Room",
+                key: "roomName",
+                width: 15
+            }
 
-            registrationNumber:
-            student.registrationNumber,
+        ];
 
-            branch:
-            student.branch,
+        records.forEach((student) => {
 
-            className:
-            student.className,
+            worksheet.addRow({
 
-            roomName:
-            student.roomName
+                studentName:
+                student.studentName,
+
+                studentEmail:
+                student.studentEmail,
+
+                registrationNumber:
+                student.registrationNumber,
+
+                branch:
+                student.branch,
+
+                className:
+                student.className,
+
+                roomName:
+                student.roomName
+
+            });
 
         });
 
-    });
+        const fileName =
+        `attendance-report-${sessionId}.xlsx`;
 
-   await workbook.xlsx.writeFile(
-    'attendance-report.xlsx'
-);
+        await workbook.xlsx.writeFile(fileName);
 
-const professorEmail =
-req.query.email;
+        await transporter.sendMail({
 
-await transporter.sendMail({
+            from:
+            "attendease.project123@gmail.com",
 
-    from:
-    'attendease.project123@gmail.com',
+            to:
+            professorEmail,
 
-    to:
-    professorEmail,
+            subject:
+            "Attendance Report",
 
-    subject:
-    'Attendance Report',
+            text:
+            "Attendance report attached.",
 
-    text:
-    'Attendance report attached.',
+            attachments: [
 
-    attachments:[
-        {
-            filename:
-            'attendance-report.xlsx',
+                {
 
-            path:
-            'attendance-report.xlsx'
+                    filename: fileName,
+
+                    path: fileName
+
+                }
+
+            ]
+
+        });
+
+        if (fs.existsSync(fileName)) {
+
+            fs.unlinkSync(fileName);
+
         }
-    ]
 
-});
+        return res.send(
+            "Attendance Report Sent Successfully"
+        );
 
-res.send(
-    'Attendance Report Sent Successfully'
-);
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+        return res.status(500).send(
+            "Failed to send attendance report."
+        );
+
+    }
 
 }
 
