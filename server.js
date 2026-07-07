@@ -20,7 +20,7 @@ app.use(express.static(__dirname));
 
 // database connection
  mongoose.connect(
-     "mongodb+srv://Attendease:@bhi7745shek@attendease.1zx6wpo.mongodb.net/?appName=Attendease"
+     "mongodb+srv://Attendease:abhi7745shek@attendease.1zx6wpo.mongodb.net/?appName=Attendease"
  )
  .then(()=>{
 
@@ -140,9 +140,10 @@ app.get("/admin/view-admin/:id", viewAdmin);
 app.delete("/admin/delete-admin/:id", deleteAdmin);
 
 //server
-const server = http.createServer(app);
+const PORT = process.env.PORT || 8000;
 
+server.listen(PORT, "0.0.0.0", () => {
 
-server.listen(8000, '0.0.0.0',() => {
-    console.log("server is running at 8000");
+    console.log("Server is running on port " + PORT);
+
 });
