@@ -22,22 +22,7 @@ nodemailer.createTransport({
     }
 
 });
-transporter.verify(function(error, success){
 
-    if(error){
-
-        console.log("ERROR:");
-        console.log(error);
-
-    }
-
-    else{
-
-        console.log("EMAIL SERVER READY");
-
-    }
-
-});
 async function registerProfessor(req,res){
     const {fullname,email,department,password,invitecode} = req.body;
     if(invitecode === "proffsggs"){
