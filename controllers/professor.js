@@ -207,6 +207,9 @@ async function dispatchReport(req, res) {
         `attendance-report-${sessionId}.xlsx`;
 
         const buffer = await workbook.xlsx.writeBuffer();
+            console.log("Preparing to send report...");
+console.log("Professor:", professorEmail);
+console.log("Session:", sessionId);
 
         await transporter.sendMail({
 
@@ -231,9 +234,6 @@ async function dispatchReport(req, res) {
                 }
 
             ]
-            console.log("Preparing to send report...");
-console.log("Professor:", professorEmail);
-console.log("Session:", sessionId);
 
         });
 
