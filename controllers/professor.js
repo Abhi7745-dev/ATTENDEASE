@@ -10,24 +10,22 @@ const nodemailer = require('nodemailer');
 const dns = require("dns");
 dns.setDefaultResultOrder("ipv4first");
 const transporter =
-nodemailer.createTransport({
-    
-    host: "smtp.gmail.com",
+const transporter = nodemailer.createTransport({
 
-    port:465,
+    host: "smtp-relay.brevo.com",
 
-    secure:true,
+    port: 587,
 
-    auth:{
+    secure: false,
 
-        user:'attendease.project123@gmail.com',
+    auth: {
 
-        pass:'nipvravxphoiyyfc'
+        user: "b14bcc001@smtp-brevo.com",
 
-    },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 15000
+        pass: "xsmtpsib-31f7521a9fe1f881cbcf4aaa4cd4694df25ab9a7f5062301b182a6022c90f08b-mhAPIseHPAaIMdUg"
+
+    }
+
 });
 
 async function registerProfessor(req,res){
