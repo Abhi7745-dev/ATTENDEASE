@@ -94,8 +94,8 @@ AttendEase is a secure QR Code-based Attendance Management System developed to s
 ---
 ##  Screenshots
 
-<img width="1912" height="1086" alt="Screenshot 2026-07-08 201109" src="https://github.com/user-attachments/assets/c2fc77aa-e364-4a80-8457-d3d22dfd7d96" />
 <img width="1917" height="1097" alt="Screenshot 2026-07-08 201207" src="https://github.com/user-attachments/assets/2b7cb8ee-7ed2-4e17-b431-499b6a0ad2e8" />
+<img width="1912" height="1086" alt="Screenshot 2026-07-08 201109" src="https://github.com/user-attachments/assets/c2fc77aa-e364-4a80-8457-d3d22dfd7d96" />
 <img width="1901" height="1098" alt="Screenshot 2026-07-08 201041" src="https://github.com/user-attachments/assets/dbfd5ad2-fb4c-4489-aee3-97f1feacf4ad" />
 <img width="1917" height="1097" alt="Screenshot 2026-07-08 201019" src="https://github.com/user-attachments/assets/ce467aff-c5b9-4fa4-8e97-4707ebc9b0fe" />
 
