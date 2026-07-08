@@ -31,10 +31,21 @@ nodemailer.createTransport({
     greetingTimeout: 10000,
     socketTimeout: 10000
 });
-await transporter.verify();
+transporter.verify(function(err, success){
 
-console.log("SMTP Connected");
+    if(err){
 
+        console.log(err);
+
+    }
+
+    else{
+
+        console.log("SMTP Connected");
+
+    }
+
+});
 async function registerProfessor(req,res){
     const {fullname,email,department,password,invitecode} = req.body;
     if(invitecode === "proffsggs"){
