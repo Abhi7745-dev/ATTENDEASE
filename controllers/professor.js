@@ -26,7 +26,7 @@ const transporter = nodemailer.createTransport({
 
         pass: "xsmtpsib-31f7521a9fe1f881cbcf4aaa4cd4694df25ab9a7f5062301b182a6022c90f08b-mhAPIseHPAaIMdUg"
 
-    }
+    },
 
         connectionTimeout: 15000,
     greetingTimeout: 15000,
