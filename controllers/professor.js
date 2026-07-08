@@ -10,7 +10,12 @@ const nodemailer = require('nodemailer');
 
 const transporter =
 nodemailer.createTransport({
-    service: "gmail",
+    
+    host: "smtp.gmail.com",
+
+    port:465,
+
+    secure:true,
     
     family: 4,
 
@@ -21,9 +26,9 @@ nodemailer.createTransport({
         pass:'nipvravxphoiyyfc'
 
     },
-    connectionTimeout: 30000,
-    greetingTimeout: 30000,
-    socketTimeout: 30000
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000
 });
 
 async function registerProfessor(req,res){
@@ -105,7 +110,7 @@ async function generateQR(req, res) {
 
 }
 
-const fs = require("fs");
+fs.unlinkSync(fileName);
 
 async function dispatchReport(req, res) {
 
