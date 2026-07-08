@@ -93,10 +93,14 @@ body{
 
     align-items:center;
 
-    padding:30px;
+    padding:20px;
 
     background:
-    linear-gradient(135deg,#0f172a,#1e293b,#0f172a);
+        radial-gradient(circle at top right, rgba(0,229,153,0.12), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(0,229,153,0.08), transparent 35%),
+        #0a0c0f;
+
+    color:#f0f2f5;
 
 }
 
@@ -110,30 +114,51 @@ body{
 
 .card{
 
-    width:100%;
+    background:#111318;
 
-    padding:50px;
+    border-radius:22px;
 
-    border-radius:25px;
+    padding:45px;
 
-    background:rgba(255,255,255,0.08);
-
-    backdrop-filter:blur(18px);
-
-    border:1px solid rgba(255,255,255,0.15);
+    border:1px solid rgba(0,229,153,0.15);
 
     box-shadow:
-    0 20px 45px rgba(0,0,0,.35);
+        0 15px 40px rgba(0,0,0,0.5),
+        0 0 30px rgba(0,229,153,0.08);
+
+    backdrop-filter:blur(12px);
 
     text-align:center;
 
 }
 
+.card::before{
+
+    content:"";
+
+    display:block;
+
+    width:80px;
+
+    height:5px;
+
+    margin:0 auto 25px;
+
+    border-radius:50px;
+
+    background:linear-gradient(
+        90deg,
+        #00e599,
+        #00ffb3
+    );
+
+}
+
 .card h1{
 
-    color:#ffffff;
+    color:#00e599;
 
-    font-size:48px;
+    font-size:42px;
 
     margin-bottom:10px;
 
@@ -141,11 +166,11 @@ body{
 
 .card p{
 
-    color:#d1d5db;
+    color:#9ca3af;
 
-    margin-bottom:45px;
+    font-size:16px;
 
-    font-size:17px;
+    margin-bottom:40px;
 
 }
 
@@ -153,45 +178,42 @@ body{
 
     display:grid;
 
-    grid-template-columns:
-    repeat(auto-fit,minmax(260px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 
-    gap:30px;
+    gap:25px;
 
 }
 
 .role-box{
 
-    background:
-    rgba(255,255,255,.07);
+    background:#181b22;
 
-    border:1px solid rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,0.08);
 
-    border-radius:20px;
+    border-radius:18px;
 
     padding:35px 25px;
 
-    transition:.35s;
+    transition:.3s;
 
 }
 
 .role-box:hover{
 
-    transform:
-    translateY(-10px);
+    transform:translateY(-8px);
 
-    border-color:#22c55e;
+    border-color:#00e599;
 
     box-shadow:
-    0 20px 35px rgba(34,197,94,.18);
+        0 12px 30px rgba(0,229,153,.15);
 
 }
 
 .role-box i{
 
-    font-size:65px;
+    font-size:60px;
 
-    color:#22c55e;
+    color:#00e599;
 
     margin-bottom:20px;
 
@@ -199,23 +221,21 @@ body{
 
 .role-box h2{
 
-    color:white;
+    color:#ffffff;
 
-    margin-bottom:15px;
+    margin-bottom:12px;
 
-    font-size:28px;
+    font-size:26px;
 
 }
 
 .role-box p{
 
-    color:#cbd5e1;
+    color:#9ca3af;
 
-    line-height:1.7;
+    line-height:1.6;
 
-    margin-bottom:30px;
-
-    font-size:15px;
+    margin-bottom:25px;
 
 }
 
@@ -229,27 +249,30 @@ body{
 
     border-radius:12px;
 
-    background:
-    linear-gradient(135deg,#22c55e,#16a34a);
+    background:linear-gradient(
+        90deg,
+        #00e599,
+        #00ffb3
+    );
 
-    color:white;
+    color:#0a0c0f;
 
     font-size:16px;
 
-    font-weight:600;
+    font-weight:700;
 
     cursor:pointer;
 
-    transition:.3s;
+    transition:.25s;
 
 }
 
 .role-box button:hover{
 
-    transform:scale(1.03);
+    transform:translateY(-2px);
 
     box-shadow:
-    0 12px 25px rgba(34,197,94,.35);
+        0 10px 25px rgba(0,229,153,.25);
 
 }
 
@@ -263,7 +286,13 @@ body{
 
     .card h1{
 
-        font-size:36px;
+        font-size:34px;
+
+    }
+
+    .roles{
+
+        grid-template-columns:1fr;
 
     }
 
