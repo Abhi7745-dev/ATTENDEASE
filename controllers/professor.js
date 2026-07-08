@@ -11,7 +11,11 @@ const nodemailer = require('nodemailer');
 const transporter =
 nodemailer.createTransport({
 
-    service:'gmail',
+    host: "smtp.gmail.com",
+
+    port: 587,
+
+    secure: false,
 
     auth:{
 
@@ -199,7 +203,9 @@ async function dispatchReport(req, res) {
         `attendance-report-${sessionId}.xlsx`;
 
         await workbook.xlsx.writeFile(fileName);
+await transporter.verify();
 
+console.log("SMTP Connected");
         await transporter.sendMail({
 
             from:
