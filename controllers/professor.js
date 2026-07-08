@@ -26,6 +26,9 @@ nodemailer.createTransport({
     }
 
 });
+await transporter.verify();
+
+console.log("SMTP Connected");
 
 async function registerProfessor(req,res){
     const {fullname,email,department,password,invitecode} = req.body;
@@ -203,9 +206,7 @@ async function dispatchReport(req, res) {
         `attendance-report-${sessionId}.xlsx`;
 
         await workbook.xlsx.writeFile(fileName);
-await transporter.verify();
 
-console.log("SMTP Connected");
         await transporter.sendMail({
 
             from:
@@ -246,15 +247,14 @@ console.log("SMTP Connected");
 
     }
 
-    catch (err) {
+   catch(err){
 
-        console.log(err);
+    console.log("EMAIL ERROR:");
+    console.log(err);
 
-        return res.status(500).send(
-            "Failed to send attendance report."
-        );
+    return res.status(500).send(err.message);
 
-    }
+}
 
 }
 
