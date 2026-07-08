@@ -9,7 +9,7 @@ const crypto = require("crypto");
 const nodemailer = require('nodemailer');
 const dns = require("dns");
 dns.setDefaultResultOrder("ipv4first");
-const transporter =
+
 const transporter = nodemailer.createTransport({
 
     host: "smtp-relay.brevo.com",
@@ -209,9 +209,8 @@ console.log("Professor:", professorEmail);
 console.log("Session:", sessionId);
 
         await transporter.sendMail({
-
-            from:
-            "attendease.project123@gmail.com",
+            
+            from: '"AttendEase" <attendease.project123@gmail.com>',
 
             to:
             professorEmail,
