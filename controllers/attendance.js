@@ -84,7 +84,7 @@ async function markAttendance(
         console.log("Distance =", distance, "meters");
 
         // Check if student is outside allowed range
-        if(distance > 30){
+        if(distance > 70){
 
             return res.json({
 
