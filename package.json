@@ -5,7 +5,7 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "axios": "^1.18.1",
+    "resend": "^6.17.1",
     "exceljs": "^4.4.0",
     "express": "^5.2.1",
     "geolib": "^3.3.14",
