@@ -14,16 +14,26 @@ const transporter = nodemailer.createTransport({
 
     host: "smtp-relay.brevo.com",
 
-    port: 587,
+    port: 2525,
 
     secure: false,
 
+    family: 4,
+    
     auth: {
 
         user: "b14bcc001@smtp-brevo.com",
 
         pass: "xsmtpsib-31f7521a9fe1f881cbcf4aaa4cd4694df25ab9a7f5062301b182a6022c90f08b-mhAPIseHPAaIMdUg"
 
+    }
+
+        connectionTimeout: 15000,
+    greetingTimeout: 15000,
+    socketTimeout: 20000,
+
+    tls: {
+        rejectUnauthorized: false
     }
 
 });
