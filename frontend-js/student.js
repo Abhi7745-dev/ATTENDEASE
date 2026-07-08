@@ -180,8 +180,8 @@ async function onScanSuccess(decodedText){
 
             {
 
-                enableHighAccuracy:true,
-                timeout:10000,
+                enableHighAccuracy:false,
+                timeout:30000,
                 maximumAge:0
 
             }
