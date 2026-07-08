@@ -170,9 +170,10 @@ async function onScanSuccess(decodedText){
             function(error){
 
                 attendanceMarked = false;
-
+                console.log(error);
+                
                 alert(
-                    "Location permission required"
+                    "Location error:\n" + error.message
                 );
 
             },
