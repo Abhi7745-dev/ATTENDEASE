@@ -110,7 +110,7 @@ async function generateQR(req, res) {
 
 }
 
-fs.unlinkSync(fileName);
+
 
 async function dispatchReport(req, res) {
 
@@ -231,14 +231,13 @@ async function dispatchReport(req, res) {
                 }
 
             ]
+            console.log("Preparing to send report...");
+console.log("Professor:", professorEmail);
+console.log("Session:", sessionId);
 
         });
 
-        if (fs.existsSync(fileName)) {
-
-            fs.unlinkSync(fileName);
-
-        }
+        
 
         return res.send(
             "Attendance Report Sent Successfully"
@@ -248,9 +247,10 @@ async function dispatchReport(req, res) {
 
    catch(err){
 
-    console.log("EMAIL ERROR:");
-    console.log(err);
-
+    console.log("EMAIL ERROR");
+console.log("Code:", err.code);
+console.log("Message:", err.message);
+console.log(err);
     return res.status(500).send(err.message);
 
 }
