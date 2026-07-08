@@ -12,12 +12,6 @@ const transporter =
 nodemailer.createTransport({
     service: "gmail",
     
-    host: "smtp.gmail.com",
-
-    port: 465,
-
-    secure: true,
-
     family: 4,
 
     auth:{
@@ -27,25 +21,11 @@ nodemailer.createTransport({
         pass:'nipvravxphoiyyfc'
 
     },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 10000
+    connectionTimeout: 30000,
+    greetingTimeout: 30000,
+    socketTimeout: 30000
 });
-transporter.verify(function(err, success){
 
-    if(err){
-
-        console.log(err);
-
-    }
-
-    else{
-
-        console.log("SMTP Connected");
-
-    }
-
-});
 async function registerProfessor(req,res){
     const {fullname,email,department,password,invitecode} = req.body;
     if(invitecode === "proffsggs"){
@@ -221,7 +201,7 @@ async function dispatchReport(req, res) {
         const fileName =
         `attendance-report-${sessionId}.xlsx`;
 
-        await workbook.xlsx.writeFile(fileName);
+        const buffer = await workbook.xlsx.writeBuffer();
 
         await transporter.sendMail({
 
@@ -242,9 +222,7 @@ async function dispatchReport(req, res) {
                 {
 
                     filename: fileName,
-
-                    path: fileName
-
+        content: buffer
                 }
 
             ]
