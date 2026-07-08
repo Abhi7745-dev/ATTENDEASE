@@ -7,7 +7,8 @@ const Attendance =
 require('../models/attendance');
 const crypto = require("crypto");
 const nodemailer = require('nodemailer');
-
+const dns = require("dns");
+dns.setDefaultResultOrder("ipv4first");
 const transporter =
 nodemailer.createTransport({
     
@@ -16,8 +17,6 @@ nodemailer.createTransport({
     port:465,
 
     secure:true,
-    
-    family: 4,
 
     auth:{
 
